@@ -5,13 +5,17 @@
 Board::Board()
 {
 	//Initialising the window
-	window.create(sf::VideoMode(1200, 1200), "Chess");
+	squareWidth = 100;
+	boardWidth = squareWidth*8;
+	window.create(sf::VideoMode(boardWidth, boardWidth), "Chess");
+	window.setFramerateLimit(60);
 
 	//Loading all the textures
 	boardTexture.loadFromFile("assets/board1.png");
 
 	//Setting up the board sprite
 	boardSprite.setTexture(boardTexture);
+	boardSprite.scale((float)boardWidth/1200,(float)boardWidth/1200);
 
 	pieces = new Piece*[32];
 
@@ -68,7 +72,8 @@ void Board::drawBoard()
 {
 	window.draw(boardSprite);
 	for (int i=0;i<32;i++){
-		window.draw(pieces[i]->getSprite());
+		if (pieces[i]->isAlive())
+			window.draw(pieces[i]->getSprite());
 		if (hoveringPieceIndex>=0)
 			window.draw(pieces[hoveringPieceIndex]->getSprite());
 	}
@@ -81,12 +86,23 @@ int Board::getPieceOnSquare(int file, int rank)
 	return -1;
 }
 
+void Board::takes(int taken)
+{
+	int x = pieces[taken]->getFile();
+	int y = pieces[taken]->getRank();
+	pieces[hoveringPieceIndex]->move(x,y);
+	pieces[hoveringPieceIndex]->setHover(false);
+
+	pieces[taken]->move(-1,-1);
+
+	pieces[taken]->setStatus(false);
+}
 
 void Board::handleClick(int x, int y)
 {
 	int rank, file, index;
-	file = x/150;
-	rank = y/150;
+	file = x/squareWidth;
+	rank = y/squareWidth;
 
 	index = getPieceOnSquare(file,rank);
 	if (index>=0){
@@ -95,26 +111,36 @@ void Board::handleClick(int x, int y)
 	}
 }
 
+
 void Board::handleClickRelease(int x, int y)
 {
-	int rank, file;
-	file = x/150;
-	rank = y/150;
+	int rank, file, i;
+	file = x/squareWidth;
+	rank = y/squareWidth;
+	i = getPieceOnSquare(file,rank);
 
 	if (hoveringPieceIndex>=0){
-		if (pieces[hoveringPieceIndex]->canMove(file,rank)){
-			pieces[hoveringPieceIndex]->move(file,rank);
-			pieces[hoveringPieceIndex]->setHover(false);
-			hoveringPieceIndex = -1;
+		if (pieces[hoveringPieceIndex]->canMove(file,rank,pieces)){
+			if (i<0){
+				pieces[hoveringPieceIndex]->move(file,rank);
+				pieces[hoveringPieceIndex]->setHover(false);
+			}
+			else if (i>=0){
+				if (pieces[i]->isWhite() != pieces[hoveringPieceIndex]->isWhite()){
+					takes(i);
+				}
+				else{
+					int i = hoveringPieceIndex;
+					pieces[i]->move(pieces[i]->getFile(),pieces[i]->getRank());
+				}
+			}
 		}
-		else {
+		else{
 			int i = hoveringPieceIndex;
 			pieces[i]->move(pieces[i]->getFile(),pieces[i]->getRank());
-			hoveringPieceIndex = -1;
 		}
 	}
-
-
+	hoveringPieceIndex = -1;
 }
 
 void Board::gameLoop()
@@ -138,7 +164,7 @@ void Board::gameLoop()
 
 		if (hoveringPieceIndex>=0){
 			sf::Vector2i pos = sf::Mouse::getPosition(window);
-			pieces[hoveringPieceIndex]->setSpritePos(pos.x-75,pos.y-75);
+			pieces[hoveringPieceIndex]->setSpritePos(pos.x-squareWidth/2,pos.y-squareWidth/2);
 		}
 
         window.clear();

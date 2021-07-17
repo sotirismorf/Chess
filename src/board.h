@@ -8,7 +8,10 @@
 class Board
 {
 	private:
+		int squareWidth;
+		int boardWidth;
 		int hoveringPieceIndex;
+
 		Square ***squares;
 		Piece **pieces;
 
@@ -28,6 +31,7 @@ class Board
 		void setStartingPosition();
 
 		//
+		void takes(int taken);
 		void handleClick(int x, int y);
 		void handleClickRelease(int x, int y);
 		void drawBoard();
