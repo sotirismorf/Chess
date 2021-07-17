@@ -75,7 +75,9 @@ bool Rook::canMove(int x, int y, Piece **pieces)
 	if (x == getFile() || y == getRank()) return true;
 	else return false;
 }
-bool Knight::canMove(int x, int y, Piece **pieces){return true;}
+bool Knight::canMove(int x, int y, Piece **pieces){
+	return true;
+}
 bool Bishop::canMove(int x, int y, Piece **pieces){return true;}
 
 bool Pawn::canMove(int x, int y, Piece **pieces)
