@@ -2,8 +2,11 @@
 #define PIECE_H
 
 #include <SFML/Graphics.hpp>
+#include "board.h"
 
 enum PieceType {KING,QUEEN,ROOK,KNIGHT,BISHOP,PAWN};
+
+class Board;
 
 class Piece
 {
@@ -13,6 +16,7 @@ class Piece
 		int fileNum;
 		bool alive;
 		bool hovering;
+		Board *board;
 
 		sf::Texture texture;
 		sf::Sprite sprite;
@@ -23,7 +27,7 @@ class Piece
 
 	public:
 		//constructor
-		Piece(PieceType pieceType, bool white, const std::string name);
+		Piece(Board *board, bool white, const std::string name);
 
 		//getters
 		bool isAlive();
@@ -41,7 +45,7 @@ class Piece
 		void setTexture();
 		void setStatus(bool alive);
 
-		virtual bool canMove(int x, int y, Piece **pieces) = 0;
+		virtual bool canMove(int x, int y) = 0;
 		//Returns 0 if the piece cannot move to the entered position
 		//and 1 if it can;
 		//virtual bool canMove(int rankNum, int fileNum) = 0;
@@ -50,46 +54,46 @@ class Piece
 class King : public Piece
 {
 	public:
-		King(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		King(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 };
 
 class Queen : public Piece
 {
 	public:
-		Queen(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		Queen(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 };
 
 class Rook : public Piece
 {
 	public:
-		Rook(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		Rook(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 
 };
 
 class Knight : public Piece
 {
 	public:
-		Knight(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		Knight(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 
 };
 
 class Bishop : public Piece
 {
 	public:
-		Bishop(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		Bishop(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 
 };
 
 class Pawn : public Piece
 {
 	public:
-		Pawn(bool isWhite);
-		bool canMove(int x, int y, Piece **pieces);
+		Pawn(Board *board, bool isWhite);
+		bool canMove(int x, int y);
 
 };
 

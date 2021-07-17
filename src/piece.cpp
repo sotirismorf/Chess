@@ -1,8 +1,7 @@
 #include "piece.h"
-
 #include <iostream>
 
-Piece::Piece(PieceType pieceType, bool white, const std::string name)
+Piece::Piece(Board *board, bool white, const std::string name)
 {
 	texture.loadFromFile(name);
 	texture.setSmooth(true);
@@ -47,14 +46,14 @@ void Piece::setStatus(bool alive) {this->alive = alive;}
 
 ///==================================
 
-King::King(bool isWhite) : Piece(KING, isWhite, isWhite ? "assets/white_king.png" : "assets/black_king.png"){}
-Queen::Queen(bool isWhite) : Piece(QUEEN, isWhite, isWhite ? "assets/white_queen.png" : "assets/black_queen.png"){}
-Rook::Rook(bool isWhite) : Piece(ROOK, isWhite, isWhite ? "assets/white_rook.png" : "assets/black_rook.png"){}
-Knight::Knight(bool isWhite) : Piece(KNIGHT, isWhite, isWhite ? "assets/white_knight.png" : "assets/black_knight.png"){}
-Bishop::Bishop(bool isWhite) : Piece(BISHOP, isWhite, isWhite ? "assets/white_bishop.png" : "assets/black_bishop.png"){}
-Pawn::Pawn(bool isWhite) : Piece(PAWN, isWhite, isWhite ? "assets/white_pawn.png" : "assets/black_pawn.png"){}
+King::King(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_king.png" : "assets/black_king.png"){}
+Queen::Queen(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_queen.png" : "assets/black_queen.png"){}
+Rook::Rook(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_rook.png" : "assets/black_rook.png"){}
+Knight::Knight(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_knight.png" : "assets/black_knight.png"){}
+Bishop::Bishop(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_bishop.png" : "assets/black_bishop.png"){}
+Pawn::Pawn(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets/white_pawn.png" : "assets/black_pawn.png"){}
 
-bool King::canMove(int x, int y, Piece **pieces)
+bool King::canMove(int x, int y)
 {
 	int posx = this->getFile(), posy = this->getRank();
 	std::cout << x << " " << y << " " << std::endl;
@@ -69,18 +68,22 @@ bool King::canMove(int x, int y, Piece **pieces)
 	else return false;
 	return false;
 }
-bool Queen::canMove(int x, int y, Piece **pieces){return true;}
-bool Rook::canMove(int x, int y, Piece **pieces)
+bool Queen::canMove(int x, int y){return true;}
+bool Rook::canMove(int x, int y)
 {
 	if (x == getFile() || y == getRank()) return true;
 	else return false;
 }
-bool Knight::canMove(int x, int y, Piece **pieces){
+bool Knight::canMove(int x, int y){
 	return true;
 }
-bool Bishop::canMove(int x, int y, Piece **pieces){return true;}
+bool Bishop::canMove(int x, int y)
+{
 
-bool Pawn::canMove(int x, int y, Piece **pieces)
+	return true;
+}
+
+bool Pawn::canMove(int x, int y)
 {
 	int rankDiff = y - getRank();
 	int fileDiff = x - getFile();

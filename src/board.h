@@ -2,8 +2,9 @@
 #define BOARD_H
 
 #include <SFML/Graphics.hpp>
-#include "square.h"
 #include "piece.h"
+
+class Piece;
 
 class Board
 {
@@ -12,7 +13,6 @@ class Board
 		int boardWidth;
 		int hoveringPieceIndex;
 
-		Square ***squares;
 		Piece **pieces;
 
 		sf::RenderWindow window;

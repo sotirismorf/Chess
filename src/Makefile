@@ -8,8 +8,8 @@ edit : $(objects)
 	$(cc) $(cflags) -o $(executable) $(objects) $(lib)
 
 main.o : piece.h board.h player.h
-piece.o : piece.h
-board.o : board.h square.h
+piece.o : piece.h board.h
+board.o : board.h piece.h square.h
 square.o : square.h
 player.o : player.h piece.h
 

@@ -1,5 +1,4 @@
 #include "board.h"
-#include "square.h"
 #include <iostream>
 
 Board::Board()
@@ -24,25 +23,25 @@ Board::Board()
 
 void Board::setPieces()
 {
-	pieces[0] = new King(true);
-	pieces[1] = new Queen(true);
-	pieces[2] = new Rook(true);
-	pieces[3] = new Rook(true);
-	pieces[4] = new Knight(true);
-	pieces[5] = new Knight(true);
-	pieces[6] = new Bishop(true);
-	pieces[7] = new Bishop(true);
-	for (int i=8;i<16;i++) pieces[i] = new Pawn(true);
+	pieces[0] = new King(this,true);
+	pieces[1] = new Queen(this,true);
+	pieces[2] = new Rook(this,true);
+	pieces[3] = new Rook(this,true);
+	pieces[4] = new Knight(this,true);
+	pieces[5] = new Knight(this,true);
+	pieces[6] = new Bishop(this,true);
+	pieces[7] = new Bishop(this,true);
+	for (int i=8;i<16;i++) pieces[i] = new Pawn(this,true);
 
-	pieces[16] = new King(false);
-	pieces[17] = new Queen(false);
-	pieces[18] = new Rook(false);
-	pieces[19] = new Rook(false);
-	pieces[20] = new Knight(false);
-	pieces[21] = new Knight(false);
-	pieces[22] = new Bishop(false);
-	pieces[23] = new Bishop(false);
-	for (int i=24;i<32;i++) pieces[i] = new Pawn(false);
+	pieces[16] = new King(this,false);
+	pieces[17] = new Queen(this,false);
+	pieces[18] = new Rook(this,false);
+	pieces[19] = new Rook(this,false);
+	pieces[20] = new Knight(this,false);
+	pieces[21] = new Knight(this,false);
+	pieces[22] = new Bishop(this,false);
+	pieces[23] = new Bishop(this,false);
+	for (int i=24;i<32;i++) pieces[i] = new Pawn(this,false);
 }
 
 void Board::setStartingPosition()
@@ -120,7 +119,7 @@ void Board::handleClickRelease(int x, int y)
 	i = getPieceOnSquare(file,rank);
 
 	if (hoveringPieceIndex>=0){
-		if (pieces[hoveringPieceIndex]->canMove(file,rank,pieces)){
+		if (pieces[hoveringPieceIndex]->canMove(file,rank)){
 			if (i<0){
 				pieces[hoveringPieceIndex]->move(file,rank);
 				pieces[hoveringPieceIndex]->setHover(false);
