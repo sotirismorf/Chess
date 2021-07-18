@@ -7,7 +7,8 @@ Piece::Piece(Board *board, bool white, const std::string name)
 	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setScale(0.5,0.5);
-	this->pieceType = pieceType;
+
+	this->board = board;
 
 	this->white = white;
 	hovering = false;
@@ -18,6 +19,7 @@ Piece::Piece(Board *board, bool white, const std::string name)
 //Getters
 int Piece::getRank() {return rankNum;}
 int Piece::getFile() {return fileNum;}
+Board *Piece::getBoard(){return board;}
 bool Piece::isAlive() {return alive;}
 bool Piece::isWhite() {return white;}
 bool Piece::getHover() {return hovering;}
@@ -56,8 +58,6 @@ Pawn::Pawn(Board *board, bool isWhite) : Piece(board, isWhite, isWhite ? "assets
 bool King::canMove(int x, int y)
 {
 	int posx = this->getFile(), posy = this->getRank();
-	std::cout << x << " " << y << " " << std::endl;
-	std::cout << this->getFile() << " " << y << " " << std::endl;
 
 	if (x==posx && y==posy) return false;
 
@@ -85,6 +85,8 @@ bool Bishop::canMove(int x, int y)
 
 bool Pawn::canMove(int x, int y)
 {
+	int i = getBoard()->getPieceOnSquare(x,y);
+
 	int rankDiff = y - getRank();
 	int fileDiff = x - getFile();
 	if (fileDiff>1 || fileDiff<-1){
@@ -99,7 +101,7 @@ bool Pawn::canMove(int x, int y)
 				else return false;
 			}
 			else if (fileDiff==1 || fileDiff== -1){
-				if (rankDiff==-1) return true;
+				if (rankDiff==-1 && i>=0) return true;
 				else return false;
 			}
 			else return false;
@@ -114,7 +116,7 @@ bool Pawn::canMove(int x, int y)
 				else return false;
 			}
 			else if (fileDiff==1 || fileDiff== -1){
-				if (rankDiff==1) return true;
+				if (rankDiff==1 && i>=0) return true;
 				else return false;
 			}
 			else return false;

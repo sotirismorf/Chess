@@ -80,8 +80,9 @@ void Board::drawBoard()
 
 int Board::getPieceOnSquare(int file, int rank)
 {
-	for (int i=0;i<32;i++)
+	for (int i=0;i<32;i++){
 		if (pieces[i]->posEquals(file,rank)) return i;
+	}
 	return -1;
 }
 

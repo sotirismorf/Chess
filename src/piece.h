@@ -34,6 +34,7 @@ class Piece
 		int getRank();
 		int getFile();
 		bool getHover();
+		Board *getBoard();
 		bool isWhite();
 		sf::Sprite getSprite();
 		bool posEquals(int file, int rank);
