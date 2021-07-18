@@ -62,7 +62,6 @@ bool King::canMove(int x, int y)
 	if (x==posx && y==posy) return false;
 
 	if (y>=posy-1 && y<=posy+1){
-		std::cout << "rank ok" << std::endl;
 		if (x>=posx-1 && x<=posx+1) return true;
 	}
 	else return false;
@@ -71,7 +70,44 @@ bool King::canMove(int x, int y)
 bool Queen::canMove(int x, int y){return true;}
 bool Rook::canMove(int x, int y)
 {
-	if (x == getFile() || y == getRank()) return true;
+	if (x == getFile()){
+		if (y<getRank()){
+			for (int i=y+1;i<getRank();i++)
+				if (getBoard()->getPieceOnSquare(x,i)>=0)
+					return false;
+		}
+		else if (getRank()<y){
+			for (int i=getRank()+1;i<y;i++)
+				if (getBoard()->getPieceOnSquare(x,i)>=0)
+					return false;
+		}
+		else if (x<getFile()){
+			for (int i=x+1;i<getFile();i++)
+				if (getBoard()->getPieceOnSquare(i,y)>=0)
+					return false;
+		}
+		else if (getFile()<x){
+			for (int i=getFile()+1;i<x;i++)
+				if (getBoard()->getPieceOnSquare(i,y)>=0)
+					return false;
+		}
+
+		return true;
+	}
+	else if (y == getRank()){
+		if (x<getFile()){
+			for (int i=x+1;i<getFile();i++)
+				if (getBoard()->getPieceOnSquare(i,y)>=0)
+					return false;
+		}
+		else if (getFile()<x){
+			for (int i=getFile()+1;i<x;i++)
+				if (getBoard()->getPieceOnSquare(i,y)>=0)
+					return false;
+		}
+
+		return true;
+	}
 	else return false;
 }
 bool Knight::canMove(int x, int y){
@@ -96,8 +132,8 @@ bool Pawn::canMove(int x, int y)
 		if (rankDiff>=0) return false;
 		else{
 			if (fileDiff==0){
-				if (rankDiff == -1) return true;
-				if (rankDiff == -2 && getRank() == 6) return true;
+				if (rankDiff == -1 && i==-1) return true;
+				if (rankDiff == -2 && getRank() == 6 && i==-1) return true;
 				else return false;
 			}
 			else if (fileDiff==1 || fileDiff== -1){
@@ -111,8 +147,8 @@ bool Pawn::canMove(int x, int y)
 		if (rankDiff<=0) return false;
 		else{
 			if (fileDiff==0){
-				if (rankDiff == 1) return true;
-				if (rankDiff == 2 && getRank() == 1) return true;
+				if (rankDiff == 1 && i==-1) return true;
+				if (rankDiff == 2 && getRank() == 1 && i==-1) return true;
 				else return false;
 			}
 			else if (fileDiff==1 || fileDiff== -1){
