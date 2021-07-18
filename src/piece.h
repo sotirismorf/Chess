@@ -36,6 +36,7 @@ class Piece
 		bool getHover();
 		Board *getBoard();
 		bool isWhite();
+		bool isPieceBetween(int x, int y);
 		sf::Sprite getSprite();
 		bool posEquals(int file, int rank);
 
