@@ -6,6 +6,12 @@
 
 class Piece;
 
+struct pos
+{
+	int x;
+	int y;
+};
+
 class Board
 {
 	private:

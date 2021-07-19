@@ -111,7 +111,6 @@ void Board::handleClick(int x, int y)
 	}
 }
 
-
 void Board::handleClickRelease(int x, int y)
 {
 	int rank, file, i;
